@@ -1,0 +1,33 @@
+ CREATE DATABASE quan_ly_kho
+	CREATE TABLE product (
+		ID INT PRIMARY KEY AUTO_INCREMENT,
+		name_product VARCHAR(255),
+		gia_ca DOUBLE,
+		chi_nhanh VARCHAR(255),
+		ngay_tao DATETIME);
+
+ INSERT INTO	product 
+	(name_product,gia_ca,chi_nhanh,ngay_tao)
+	VALUES 
+	('Toyota Vios',520000000,'Trần Duy Hưng',NOW()),
+	('Toyota Cross',800000000,'Gia Lâm',NOW()),
+	('Hyundai Accent',510000000,'Trần Duy Hưng',NOW()),
+	('Honda City', 550000000,'Hai Bà Trưng',NOW()),
+	('Vinfast Fadil', 360000000,'Trần Duy Hưng',NOW()),
+	('Mitsubishi Xpander',620000000,'Trần Duy Hưng',NOW()),
+	('Mazda CX-5', 900000000,'Lý Thường Kiệt',NOW()),
+	('Kia Seltos', 700000000,'Gia Lâm',NOW()),
+	('Kia K3', 650000000,'Gia Lâm',NOW()),
+	('Ford Ranger', 1100000000,'Lý Thường Kiệt',NOW()),
+	('Honda CRV', 1100000000,'THai Bà Trưng',NOW()),
+	('Hyundai', 360000000,'Gia Lâm',NOW()),
+	('Hyundai Santafe', 1000000000,'Gia Lâm',NOW()),
+	('Kia Carnival', 1800000000,'Hai Bà Trưng',NOW()),
+	('Hyundai Tucson', 800000000,'Trần Duy Hưng',NOW());
+	SELECT * FROM product WHERE gia_ca > 115000000	
+	SELECT * FROM product WHERE name_product LIKE "k%";
+	SELECT * FROM product WHERE name_product LIKE "kia%" OR gia_ca < 200000000;
+	SELECT * FROM product WHERE gia_ca IN(100000000,130000000,140000000,150000000,160000000,170000000);
+	SELECT DISTINCT (gia_ca) FROM product;
+	SELECT * FROM product WHERE chi_nhanh = 'Lý Thường Kiệt' OR chi_nhanh = 'Hai Bà Trung';
+	SELECT * FROM product WHERE chi_nhanh = 'Lý Thường Kiệt'AND gia_ca < 1000000000 OR chi_nhanh = 'Hai Bà Trung' AND gia_ca < 1000000000; 
