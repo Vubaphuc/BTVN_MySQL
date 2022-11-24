@@ -1,0 +1,85 @@
+
+-- tạo CSDL BTVN
+	
+CREATE DATABASE BTVN
+	CHARACTER SET "utf8mb4"
+	COLLATE "utf8mb4_general_ci";
+
+-- bài 1:
+-- a. Tạo bảng như sau bằng lệnh
+
+ CREATE TABLE nhanvien (
+ 	ID INT,
+ 	NAME VARCHAR(250),
+ 	Ngay_Bat_Dau DATE,
+ 	So_Chiec INT
+ );
+
+
+ -- nhập dữ liệu vào bảng
+ 
+ 
+INSERT INTO nhanvien (ID,NAME,Ngay_Bat_Dau,So_Chiec)
+	VALUES  
+	(1,'Hoang','2007-01-24',250),
+	(2,'Nam','2007-05-27',220),
+	(3,'Viet','2007-05-06',170),
+	(3,'Viet','2007-04-06',100),
+	(4,'Huong','2007-04-06',220),
+	(5,'Xuan','2007-06-06',300),
+	(5,'Xuan','2007-02-06',350);
+
+
+
+-- b. Viết câu lệnh lấy dữ liệu 
+
+SELECT CONCAT (ID,' : ',NAME,' , ',Ngay_Bat_Dau) AS thong_tin
+	FROM nhanvien;
+
+-- bài 2:
+-- a. Viết câu lệnh tạo dữ liệu như sau
+-- tạo bảng 
+
+CREATE TABLE employee (
+	EMPLOYEE_ID INT,
+	EMPLOYEE_NAME VARCHAR(250),
+	SALARY DOUBLE 
+);
+
+-- nhập dữ liệu
+
+INSERT INTO employee (EMPLOYEE_ID,EMPLOYEE_NAME,SALARY)
+	VALUES 
+	(12,'Finch',15000),
+	(22,'Peter',25000),
+	(32,'Warner',56000),
+	(42,'Watson',90000);
+
+-- b. Mỗi nhân viên được tang lương lên gấp đôi, Viết câu lệnh lấy dữ liệu hiển thị thông tin nhân viên, trong đó salary là mức lương mới nhân viên nhận được
+
+ SELECT EMPLOYEE_ID,EMPLOYEE_NAME,SALARY+SALARY AS SALARY FROM employee;
+
+-- bài 3 
+-- a. Viết câu lệnh tạo dữ liệu như sau
+
+CREATE TABLE sinhvien (
+	first_name VARCHAR(250),
+	last_name VARCHAR(250),
+	birthday DATE
+);
+
+-- nhập dữ liệu
+
+INSERT INTO sinhvien (first_name,last_name,birthday)
+	VALUES 
+	('Le Thi','Thu','1996-12-12'),
+	('Vu Thi','Nga','1997-11-17'),
+	('Nguyen Van','C','2000-12-17'),
+	('Pham Van','D','1998-10-11'),
+	('Tran Dinh','Trong','1997-04-25'),
+	('Bui','Tien Dung','1997-02-28');
+
+-- b. Viết câu lệnh lấy ra số ngày tính từ ngày sinh nhật đến ngày hôm nay
+
+SELECT first_name,last_name,birthday,
+ (SELECT DATEDIFF(NOW(),birthday)) AS So_Ngay FROM sinhvien;
