@@ -1,0 +1,97 @@
+-- tạo CSDL BTVN
+CREATE DATABASE BTVN_3
+	CHARACTER SET "utf8mb4"
+	COLLATE "utf8mb4_general_ci";
+
+
+-- tạo bảng table
+
+CREATE TABLE nha_cap_cap (
+	ma_nha_cung_cap INT PRIMARY KEY,
+	ten_nha_cung_cap VARCHAR(250),
+	dia_chi VARCHAR(250),
+	phone VARCHAR(11)
+);
+
+-- nhập dữ liệu
+
+INSERT INTO nha_cap_cap (ma_nha_cung_cap,ten_nha_cung_cap,dia_chi,phone)
+	VALUES 
+	(1,'Vinfat','Hà Nội','0968616076'),
+	(2,'Vinhouse','Hà Nam','0968616076'),
+	(3,'Đông Phương','Bắc Ninh','0968616076'),
+	(4,'Vinfat','Hà Nội','0968616076'),
+	(5,'Vũ Tên Các','Bắc Giang','0968616076'),
+	(6,'Tam Tiên Các','Hà Nam','0968616076'),
+	(7,'Vinfat','Hà Nội','0968616076'),
+	(8,'Đông Phương','Bắc Ninh','0968616076'),
+	(9,'Vũ Tên Các','Bắc Giang','0968616076'),
+	(10,'Vinhouse','Hà Nam','0968616076');
+
+-- tạo bảng table
+
+CREATE TABLE thuoc (
+	ma_thuoc INT PRIMARY KEY,
+	ten_thuoc VARCHAR(250),
+	don_vi_tin DOUBLE,
+	so_luong INT
+);
+
+-- nhập dữ liệu
+
+INSERT INTO thuoc (ma_thuoc,ten_thuoc,don_vi_tin,so_luong)
+	VALUES 
+	(1,'Nutricep',1600000,100),
+	(2,'Aloha',1000000,100),
+	(3,'Kunni Cordyceps Premium Extract',750000,100),
+	(4,'Megatec Plus',650000,100),
+	(5,'Royal Gold',1500000,100),
+	(6,'Tenken',1300000,100),
+	(7,'Ogaland',1250000,100),
+	(8,'Genki dạng viên',2100000,100),
+	(9,'Cordycepin',6000000,100),
+	(10,'Adenosine',7500000,100);
+
+-- tạo bảng table
+
+CREATE TABLE nhan_vien (
+	ma_nhan_vien INT PRIMARY KEY AUTO_INCREMENT,
+	ten_nhan_vien VARCHAR(250),
+	chuc_vu VARCHAR(250),
+	score DOUBLE,
+	Salary DOUBLE
+);
+
+-- nhập dữ liệu
+
+INSERT INTO nhan_vien (ten_nhan_vien,chuc_vu,score,Salary)
+	VALUES 
+	('Hà','Trưởng Phòng',10,20000000),
+	('Trang','Quản lý',10,15000000),
+	('Việt','Quản lý',10,15000000),
+	('Hùng','Nhân viên',9.5,11000000),
+	('Đức','Nhân viên',8.5,11000000),
+	('Luân','Nhân viên',10,11000000),
+	('Hiền','Nhân viên',9,11000000),
+	('Huyền','Nhân viên',8,11000000),
+	('Vũ','Nhân viên',9.5,11000000),
+	('Thiên','Trưởng Phòng',10,20000000);
+
+-- -------------------------------------------------------
+
+-- Tìm tất cả các nhà cung cấp có địa chỉ ở HN
+
+SELECT *  FROM  nha_cap_cap
+	WHERE dia_chi = 'Hà Nội';
+	
+-- Đếm số lượng loại thuốc có của cửa hàng
+
+Select SUM(so_luong) from thuoc;
+
+-- Tính tổng trung bình điểm chuyên cần của nhân viên
+
+Select AVG(score) from nhan_vien;
+
+-- tiền lương phải trả cho tất cả nhân viên trong 1 tháng
+
+Select SUM(Salary) from nhan_vien;
