@@ -1,0 +1,228 @@
+-- tạo database bài tập về nhà buổi 4
+CREATE DATABASE techmaster_system
+	CHARACTER SET "utf8mb4"
+	COLLATE "utf8mb4_general_ci";
+	
+-- tạo các bảng trong bài tập
+-- tạo bảng blog
+	
+CREATE TABLE blog (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	title VARCHAR(250),
+	DESCRIPTION text,
+	created_at DATE
+);
+
+-- tạo bảng role
+
+CREATE TABLE ROLE (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	role_name VARCHAR(250) NOT NULL
+);
+
+-- tạo bảng course
+
+CREATE TABLE course (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	course_name VARCHAR(250) NOT NULL,
+	DESCRIPTION text,
+	price DOUBLE,
+	course_type ENUM('ONLINE','OFFLINE'),
+	vote INT
+);
+
+-- tạo bảng user
+
+CREATE TABLE user (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	full_name VARCHAR(250) NOT NULL,
+	phone INT UNIQUE,
+	email VARCHAR(250) UNIQUE,
+	ROLE_ID INT,
+	course_ID INT,
+	FOREIGN KEY(ROLE_ID) REFERENCES ROLE(ID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
+	FOREIGN KEY(course_ID) REFERENCES course(ID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
+);
+
+-- tạo bảng opening_schedule
+
+CREATE TABLE opening_schedule (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	start_date DATE,-- ngày đăng ký
+	address VARCHAR(250),
+	study_day VARCHAR(250), -- ngày bắt đầu học
+	study_time VARCHAR(250) -- tổng số ngày học
+);
+
+-- tạo bảng transaction_history
+
+CREATE TABLE transaction_history (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	registration_date DATE,
+	STATUS ENUM('OK','PEDING') NOT NULL,
+	user_ID INT,
+	course_ID INT,
+	FOREIGN KEY(user_ID) REFERENCES user(ID),
+	FOREIGN KEY(course_ID) REFERENCES course(ID)
+);
+
+-- tạo bảng account_banking
+
+CREATE TABLE account_banking (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	bank_name VARCHAR(250),
+	account_num INT UNIQUE,
+	user_ID INT,
+	FOREIGN KEY(user_ID) REFERENCES user(ID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
+);
+
+-- tạo bảng trung gian user_course
+
+CREATE TABLE user_course (
+	user_ID INT,
+	course_ID INT,
+	FOREIGN KEY(user_ID) REFERENCES user(ID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
+	FOREIGN KEY(course_ID) REFERENCES course(ID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
+);
+
+-- tạo bảng trung gian course_opening_schedule
+
+CREATE TABLE course_opening_schedule (
+	course_ID INT,
+	opening_schedule_ID INT,
+	FOREIGN KEY(course_ID) REFERENCES course(ID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
+	FOREIGN KEY(opening_schedule_ID) REFERENCES opening_schedule(ID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
+);
+
+-- nhập thông tin vào bảng
+-- Insert mỗi bảng ít nhất 5 records
+
+INSERT INTO blog (title,DESCRIPTION,created_at)
+	VALUES
+	('Hà nội','hà nội về đông','2022-10-11'),
+	('Bắc Ninh','Bắc Ninh về đông','2022-10-12'),
+	('Hà Giang','Hà Giang về đông','2022-10-13'),
+	('SaPa','SaPa về đông','2022-10-14'),
+	('Đà Lạt','Đà Lạt về đông','2022-10-15');
+	
+	
+INSERT INTO role (role_name)
+	VALUES
+	('sinh Viên CNTT'),
+	('Nhân viên marketing'),
+	('Sinh viên'),
+	('Người đi làm trái ngành'),
+	('Người đang thất nghiệp');
+	
+	
+INSERT INTO course (course_name,DESCRIPTION,price,course_type,vote)
+	VALUES
+	('Bootcamp Web Front End','LẬP TRÌNH WEB TOÀN THỜI GIAN - BOOTCAMP FULL STACK WEB',21500000,'OFFLINE',60),
+	('Web Front End + React','Thiết kế giao diện UI và phân tích',17000000,'OFFLINE',70),
+	('Fullstack Java Spring Boot','Khoá học lập trình Full Stack Java bằng Java SpringBoot Fullstack',24000000,'ONLINE',80),
+	('Fullstack PHP Laravel','Lộ trình học (75 buổi * 3 tiếng - 6,5 tháng)',20500000,'ONLINE',90),
+	('DevOps','Lộ trình đào tạo DevOps',15000000,'OFFLINE',100);
+
+
+INSERT INTO user (full_name,phone,email,ROLE_ID,course_ID)
+	VALUES
+	('Trần Thế Hà',0968616076,'ha@gmail.com',1,1),
+	('Vũ Đình Chung',0968616077,'chung@gmail.com',2,2),
+	('Giáp Thị Nhàn',0968616078,'nhan@gmail.com',3,3),
+	('Vũ Bá Phúc',0968616079,'phuc@gmail.com',4,4),
+	('Nguyễn Văn Thắng',0968616080,'thang@gmail.com',5,5);
+	
+
+		
+INSERT INTO opening_schedule (start_date,address,study_day,study_time)
+	VALUES
+	('2022-12-10','Tầng 12A Viwaseen tower 48 Tố Hữu, HN','Thứ 3, 5, 7','3 Tháng'),
+	('2022-12-10','Tầng 12A Viwaseen tower 48 Tố Hữu, HN','Thứ 2, 4, 6','6 Tháng'),
+	('2022-12-10','Tầng 12A Viwaseen tower 48 Tố Hữu, HN','Thứ 3, 5, 7','9 Tháng'),
+	('2022-12-10','Tầng 12A Viwaseen tower 48 Tố Hữu, HN','Thứ 2, 4, 6','6,5 Tháng'),
+	('2022-12-10','Tầng 12A Viwaseen tower 48 Tố Hữu, HN','Thứ 3, 5, 7','3 Tháng');
+	
+
+INSERT INTO course_opening_schedule (course_ID,opening_schedule_ID)
+	VALUES 
+	(1,1),
+	(2,2),
+	(3,3),
+	(4,4),
+	(5,5);
+
+
+
+	
+INSERT INTO transaction_history (registration_date,STATUS,user_ID,course_ID)
+	VALUES
+	('2022-11-29','OK',1,1),
+	('2022-11-29','OK',2,2),
+	('2022-11-29','OK',3,3),
+	('2022-11-29','OK',4,4),
+	('2022-11-29','OK',5,5);
+	
+	
+	
+	
+INSERT INTO account_banking (bank_name,account_num,user_ID)
+	VALUES
+	('TRAN THE HA',0123456789,1),
+	('VU DINH CHUNG',0123456790,2),
+	('GIAP THI NHAN',0123456791,3),
+	('VU BA PHUC',0123456792,4),
+	('NGUYEN VAN THANG',0123456793,5);
+	
+INSERT INTO user_course (user_ID,course_ID)
+	VALUES 
+	(1,1),
+	(2,2),
+	(3,3),
+	(4,4),
+	(5,5);
+	
+
+
+-- yêu cầu bài tập
+-- Hiển thị Hồ sơ cá nhân của các user (id, name, phone, email, role, thông thẻ tin ngân hàng)
+
+SELECT user.full_name,user.phone,user.email,role.role_name,account_banking.bank_name,account_banking.account_num FROM user
+	INNER JOIN role
+	ON user.ID = role.ID
+	INNER JOIN account_banking
+	ON user.ID = account_banking.ID;
+	
+-- Tìm kiếm tất cả các học viên đăng ký học online
+
+SELECT user.full_name,user.phone,user.email FROM user
+	INNER JOIN course
+	ON user.ID = course.ID
+	WHERE course_type = 'ONLINE';
+	
+-- Hiển thị lịch khai giảng và thông tin các khóa học trong buổi khai giảng đó
+
+SELECT * FROM course AS thông_tin_khóa_học
+	INNER JOIN opening_schedule
+	ON course.ID = opening_schedule.ID;
+	
+-- Hiển thị chi tiết lịch sử gd của các học viên: mã giao dịch(id), tên học viên(name_student), tên khóa học (name course), ngày đăng ký(registration_date), trạng thái(status)
+
+SELECT transaction_history.ID AS mã_giao_dịch,user.full_name AS tên_Học_Viên,course.course_name AS tên_Khóa_Học,transaction_history.registration_date AS ngày_đăng_ký,transaction_history.`STATUS` AS trạng_thái FROM transaction_history
+	INNER JOIN course
+	ON transaction_history.ID = course.ID
+	INNER JOIN user
+	ON transaction_history.ID = user.ID;
