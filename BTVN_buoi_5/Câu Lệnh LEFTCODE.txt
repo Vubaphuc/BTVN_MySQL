@@ -1,0 +1,21 @@
+182. Duplicate Emails
+https://leetcode.com/problems/duplicate-emails
+
+câu lệnh SQL
+
+SELECT email
+FROM Person
+GROUP BY email
+HAVING COUNT(email) > 1;
+
+--------------------------------------------------------------------
+
+183. Customers Who Never Order
+https://leetcode.com/problems/customers-who-never-order
+
+câu lệnh SQL
+
+SELECT Name AS Customers
+FROM Customers
+WHERE NOT EXISTS
+(SELECT CustomerID FROM Orders WHERE Customers.ID=Orders.CustomerID)
