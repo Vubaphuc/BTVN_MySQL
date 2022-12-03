@@ -11,8 +11,8 @@ CREATE TABLE categories (
 	ID BIGINT PRIMARY KEY AUTO_INCREMENT,
 	category_code VARCHAR(250) UNIQUE NOT NULL,
 	category_name VARCHAR(250) NOT NULL,
-	created_date DATE NOT NULL,
-	updated_dateDATE DATE NOT NULL
+	created_date DATETIME NOT NULL,
+	updated_date DATETIME NOT NULL
 );
 	
 -- tạo bảng suppliers
@@ -22,26 +22,36 @@ CREATE TABLE suppliers (
 	supplier_code VARCHAR(250) UNIQUE NOT NULL,
 	supplier_name VARCHAR(250) NOT NULL,
 	image VARCHAR(250),
-	created_date DATE NOT NULL,
-	updated_date DATE NOT NULL
+	created_date DATETIME NOT NULL,
+	updated_date DATETIME NOT NULL
 ); 
+
+-- tạo bảng product_discounts
+
+CREATE TABLE product_discounts (
+	ID BIGINT PRIMARY KEY AUTO_INCREMENT,
+	discount_name VARCHAR(250) NOT NULL,
+	discount_amount INT,
+	start_date DATETIME NOT NULL,
+	end_date DATETIME NOT NULL
+);
 
 -- tạo bảng products
 
 CREATE TABLE products (
 	ID BIGINT PRIMARY KEY AUTO_INCREMENT,
-	product_code VARCHAR(250) UNIQUE NOT NULL,
+	product_code VARCHAR(250) NOT NULL,
 	product_name VARCHAR(250) NOT NULL,
 	image VARCHAR(250),
 	DESCRIPTION TEXT,
 	standard_cost DOUBLE,-- (giá chuẩn của sản phẩm)
 	quantity INT,
 	from_country VARCHAR(250) CONSTRAINT chk_from_country 
-	CHECK (from_country NOT LIKE '% %' AND from_country LIKE '%_%' AND BINARY from_country = BINARY UPPER(from_country)),
+	CHECK (((from_country NOT LIKE '% %') AND (from_country LIKE '%_%')) AND (BINARY from_country = BINARY UPPER(from_country))),
 	product_unit ENUM('Cái','Bộ','Quyển','Kg'),
 	is_new ENUM('NULL','NEW','NOT_NEW'),-- (sản phẩm nhập năm nay)
-	created_date DATE NOT NULL,
-	updated_date DATE NOT NULL,
+	created_date DATETIME NOT NULL,
+	updated_date DATETIME NOT NULL,
 	categories_ID BIGINT,
 	suppliers_ID BIGINT, 
 	product_discounts_ID BIGINT,
@@ -51,32 +61,6 @@ CREATE TABLE products (
 	FOREIGN KEY (categories_ID) REFERENCES categories(ID),
 	CONSTRAINT product_discounts_FK_products
 	FOREIGN KEY (product_discounts_ID) REFERENCES product_discounts(ID)
-);
-
--- tạo bảng product_discounts
-
-CREATE TABLE product_discounts (
-	ID BIGINT PRIMARY KEY AUTO_INCREMENT,
-	discount_name VARCHAR(250) NOT NULL,
-	discount_amount INT,
-	start_date DATE NOT NULL,
-	end_date DATE NOT NULL
-);
-
--- tạo bảng product_reviews
-
-CREATE TABLE product_reviews (
-	ID INT PRIMARY KEY AUTO_INCREMENT,
-	rating DOUBLE NOT NULL,
-	COMMENT TEXT NOT NULL,
-	created_date DATE NOT NULL,
-	updated_date DATE NOT NULL,
-	customers_ID INT,
-	products_ID BIGINT,
-	CONSTRAINT product_reviews_FK_customers
-	FOREIGN KEY (customers_ID) REFERENCES customers(ID),
-	CONSTRAINT product_reviews_FK_products
-	FOREIGN KEY (products_ID) REFERENCES products(ID)
 );
 
 -- tạo bảng customers
@@ -93,10 +77,23 @@ CREATE TABLE customers (
 	avartar VARCHAR(250),
 	address VARCHAR(250),
 	STATUS VARCHAR(250),
-	created_date DATE NOT NULL,
-	updated_date DATE NOT NULL,
+	created_date DATETIME NOT NULL,
+	updated_date DATETIME NOT NULL
+);
+
+-- tạo bảng product_reviews
+
+CREATE TABLE product_reviews (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	rating DOUBLE NOT NULL,
+	COMMENT TEXT NOT NULL,
+	created_date DATETIME NOT NULL,
+	updated_date DATETIME NOT NULL,
+	customers_ID INT,
 	products_ID BIGINT,
-	CONSTRAINT customers_FK_products
+	CONSTRAINT product_reviews_FK_customers
+	FOREIGN KEY (customers_ID) REFERENCES customers(ID),
+	CONSTRAINT product_reviews_FK_products
 	FOREIGN KEY (products_ID) REFERENCES products(ID)
 );
 
@@ -108,9 +105,18 @@ CREATE TABLE orders (
 	price DOUBLE NOT NULL,
 	paid_date DATE NOT NULL,
 	customers_ID INT,
-	products_ID BIGINT,
 	CONSTRAINT orders_FK_customers
-	FOREIGN KEY (customers_ID) REFERENCES customers(ID),
-	CONSTRAINT orders_FK_products
-	FOREIGN KEY (products_ID) REFERENCES products(ID)
+	FOREIGN KEY (customers_ID) REFERENCES customers(ID)
+);
+
+-- tạo bảng trung gian order_product
+
+CREATE TABLE order_product (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	order_ID INT,
+	product_ID BIGINT,
+	CONSTRAINT oder_product_FK_orders
+	FOREIGN KEY (order_ID) REFERENCES orders(ID),
+	CONSTRAINT order_product_FK_product
+	FOREIGN KEY (product_ID) REFERENCES products(ID)
 );
