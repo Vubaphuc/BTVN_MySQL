@@ -19,3 +19,86 @@ SELECT Name AS Customers
 FROM Customers
 WHERE NOT EXISTS
 (SELECT CustomerID FROM Orders WHERE Customers.ID=Orders.CustomerID)
+
+---------------------------------
+
+
+197. Rising Temperature
+https://leetcode.com/problems/rising-temperature
+
+câu lệnh SQL
+
+SELECT t1.Id
+FROM Weather t1
+INNER JOIN Weather t2
+ON TO_DAYS(t1.recordDate) = TO_DAYS(t2.recordDate) + 1
+WHERE t1.temperature > t2.temperature
+
+----------------------------------------------------------------------------
+
+584. Find Customer Referee
+https://leetcode.com/problems/find-customer-referee
+
+câu lệnh SQL
+
+SELECT name 
+FROM customer
+WHERE referee_id <> 2 OR referee_id IS NULL
+
+------------------------------------------------------------
+
+586. Customer Placing the Largest Number of Orders
+https://leetcode.com/problems/customer-placing-the-largest-number-of-orders
+
+câu lệnh SQL
+
+SELECT  customer_number
+FROM    orders
+GROUP BY customer_number
+ORDER BY COUNT(order_number) DESC 
+LIMIT 1
+
+---------------------------------------------------------------
+
+595. Big Countries
+https://leetcode.com/problems/big-countries
+
+câu lệnh SQL
+
+SELECT name, population, area
+FROM World
+WHERE area > 3000000 OR population > 25000000;
+
+-----------------------------------------------------------
+
+596. Classes More Than 5 Students
+https://leetcode.com/problems/classes-more-than-5-students
+
+câu lệnh SQL
+
+SELECT class FROM (
+SELECT COUNT(DISTINCT student) AS num,class FROM courses
+GROUP BY class) AS temp
+WHERE num >= 5;
+
+-----------------------------------------------------------------
+
+607. Sales Person
+https://leetcode.com/problems/sales-person
+
+câu lệnh SQL
+
+SELECT name
+FROM salesperson
+WHERE sales_id NOT IN (
+    SELECT sales_id
+    FROM orders LEFT JOIN company 
+    ON orders.com_id = company.com_id
+    WHERE company.name = 'RED'
+)
+ORDER BY name;
+
+-----------------------------------------------------------------
+
+
+

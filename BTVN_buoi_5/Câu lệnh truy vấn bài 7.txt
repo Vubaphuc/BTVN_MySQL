@@ -1,0 +1,122 @@
+-- 1. Tìm số hóa đơn đã mua tất cả các sản phẩm do Singapore sản xuất.
+SELECT * FROM orders a
+	JOIN order_product b
+	ON a.ID = b.order_ID
+	JOIN products c
+	ON b.product_ID = c.ID
+	WHERE c.from_country = 'SINGAPORE';
+	
+	
+-- 2. Có bao nhiêu hóa đơn không phải của khách hàng đăng ký thành viên mua?
+-- 3. Có bao nhiêu sản phẩm khác nhau được bán ra trong năm 2006.
+
+SELECT COUNT(DISTINCT product_ID) AS số_product_được_bán_trong_năm_2006_là
+FROM order_product a JOIN orders b
+WHERE YEAR(b.paid_date) = '2006';
+
+
+-- 4. Cho biết trị giá hóa đơn cao nhất, thấp nhất là bao nhiêu ?
+SELECT MAX(a.price) AS giá_trị_hóa_đơn_cao_nhất ,MIN(a.price) AS giá_trị_hóa_đơn_thấp_nhất
+	FROM orders a
+-- 5. Trị giá trung bình của tất cả các hóa đơn được bán ra trong năm 2006 là bao nhiêu?
+SELECT AVG(a.price) AS giá_trị_trung_bình_tất_cả_hóa_đơn_năm_2006
+	FROM orders a
+	WHERE YEAR(a.paid_date) = '2006';
+-- 6. Tính doanh thu bán hàng trong năm 2006.
+SELECT SUM(a.price) AS tong_doanh_thu_nam_2006
+	FROM orders a
+	WHERE YEAR(a.paid_date) = '2006';
+-- 7. Tìm số hóa đơn có trị giá cao nhất trong năm 2006.
+SELECT *
+	FROM orders a
+	WHERE YEAR(a.paid_date) = '2006'
+	ORDER BY a.price DESC
+	LIMIT 1;
+-- 8. Tìm họ tên khách hàng đã mua hóa đơn có trị giá cao nhất trong năm 2006.
+SELECT CONCAT(a.first_name,' ',a.last_name)
+	FROM customers a
+	JOIN orders b
+	ON a.ID = b.customers_ID
+	WHERE YEAR(b.paid_date) = '2006'
+	ORDER BY b.price DESC
+	LIMIT 1;
+-- 9. In ra danh sách các sản phẩm (MASP, TENSP) có giá bán bằng 1 trong 3 mức giá cao nhất.
+SELECT * FROM (
+SELECT c.product_code, c.product_name
+	FROM orders a
+	JOIN order_product b
+	ON a.ID = b.order_ID
+	JOIN products c
+	ON b.product_ID = c.ID
+	ORDER BY a.price DESC
+	LIMIT 3
+	) AS d
+	ORDER BY RAND()
+	LIMIT 1;
+-- 10. In ra danh sách các sản phẩm (MASP, TENSP) do “Thai Lan” sản xuất có giá bằng 1 trong 3 mức giá cao nhất (của tất cả các sản phẩm).
+SELECT * FROM (
+SELECT b.product_code,b.product_name
+	FROM order_product a
+	JOIN products b
+	ON a.product_ID = b.ID
+	JOIN orders c
+	ON a.order_ID = c.ID
+	WHERE b.from_country = 'THAI_LAN'
+	GROUP BY b.product_code
+	ORDER BY b.standard_cost DESC
+	LIMIT 3
+	) AS d
+	ORDER BY RAND()
+	LIMIT 1;
+-- 11. In ra danh sách các sản phẩm (MASP, TENSP) do “Trung Quoc” sản xuất có giá bằng 1 trong 3 mức giá cao nhất (của sản phẩm do “Trung Quoc” sản xuất)
+SELECT * FROM (
+SELECT b.product_code,b.product_name
+	FROM order_product a
+	JOIN products b
+	ON a.product_ID = b.ID
+	JOIN orders c
+	ON a.order_ID = c.ID
+	WHERE b.from_country = 'TRUNG_QUOC'
+	GROUP BY b.product_code
+	ORDER BY b.standard_cost DESC
+	LIMIT 3
+	) AS d
+	ORDER BY RAND()
+	LIMIT 1;
+-- 12. In ra danh sách 3 khách hàng có doanh số cao nhất (sắp xếp theo kiểu xếp hạng).
+SELECT a.* , b.price
+	FROM customers a
+	JOIN orders b
+	ON a.ID = b.customers_ID
+	WHERE ()
+	ORDER BY b.price DESC
+	LIMIT 3;
+-- 13. Tính tổng số sản phẩm của từng nước sản xuất.
+SELECT a.ID,a.product_code,a.product_name,SUM(a.quantity) AS tổng_quanlity,a.from_country
+	FROM products a
+	GROUP BY a.from_country
+	ORDER BY a.quantity DESC;
+-- 14. Với từng nước sản xuất, tìm giá bán cao nhất, thấp nhất, trung bình của các sản phẩm.
+
+-- 15. Tính doanh thu bán hàng mỗi ngày.
+-- 16. Tính tổng số lượng của từng sản phẩm bán ra trong tháng 10/2006.
+SELECT SUM(a.quantity)
+	FROM orders a
+	WHERE MONTH(a.paid_date) = '10';
+	
+-- 17. Tìm hóa đơn có mua ít nhất 4 sản phẩm khác nhau.
+
+SELECT b.* 
+	FROM orders b
+	JOIN order_product c 
+	ON b.ID = c.order_ID
+	GROUP BY c.order_ID
+	HAVING COUNT(DISTINCT c.product_ID) >= 4;
+
+-- 18. Tìm khách hàng (MAKH, HOTEN) có số lần mua hàng nhiều nhất.
+
+-- 19. Tháng mấy trong năm 2006, doanh số bán hàng cao nhất ?
+-- 20. Tìm sản phẩm (MASP, TENSP) có tổng số lượng bán ra thấp nhất trong năm 2006.
+-- 21. Mỗi nước sản xuất, tìm sản phẩm (MASP,TENSP) có giá bán cao nhất.
+-- 22. Tìm nước sản xuất sản xuất ít nhất 3 sản phẩm có giá bán khác nhau.
+-- 23. Trong 10 khách hàng có doanh số cao nhất, tìm khách hàng có số lần mua hàng nhiều nhất.
