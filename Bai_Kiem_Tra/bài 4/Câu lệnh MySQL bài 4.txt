@@ -23,10 +23,9 @@ INSERT INTO orders1 (Customers_ID) VALUES (1);
 -- Câu lệnh MySQL
 -- - Lấy ra danh sách những khách hàng chưa bào giờ order
 
-SELECT NAME AS khách_hàng
+SELECT customers.NAME
 	FROM customers
-	WHERE NOT EXISTS 
+	WHERE customers.id NOT IN
 	(
-		SELECT Customers_ID FROM orders1 
-			WHERE customers.id = orders1.Customers_ID
+    	SELECT Customers_ID from orders1
 	);
