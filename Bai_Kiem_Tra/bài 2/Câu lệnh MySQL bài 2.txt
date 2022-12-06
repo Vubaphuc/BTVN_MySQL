@@ -1,0 +1,23 @@
+-- bài 2
+-- Tạo bảng và dữ liệu như sau bằng câu lệnh
+
+CREATE TABLE IF NOT EXISTS Employee (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	NAME VARCHAR(100),
+	Salary DOUBLE,
+	managerID INT	
+);
+
+-- câu lệnh INSERT INTO
+
+INSERT INTO Employee (NAME,Salary,managerID) VALUES ('Joe',70000,3);
+INSERT INTO Employee (NAME,Salary,managerID) VALUES ('Henry',80000,4);
+INSERT INTO Employee (NAME,Salary) VALUES ('Sam',60000);
+INSERT INTO Employee (NAME,Salary) VALUES ('Max',90000);
+
+-- Câu truy vấn MySQL
+-- - Lấy ra tên những người có mức lương cao hơn quản lý của họ (quản lý là managerId)
+
+SELECT a.NAME AS Tên_Nhân_Viên
+	FROM Employee AS a, Employee AS b 
+	WHERE a.managerID = b.ID AND a.Salary > b.Salary

@@ -1,0 +1,21 @@
+-- Bài 03
+-- - Tạo bảng và dữ liệu như sau bằng câu lệnh
+
+CREATE TABLE IF NOT EXISTS Person (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	email VARCHAR(150)
+);
+
+-- câu lệnh INSERT INTO
+
+INSERT INTO Person (email) VALUES ('a@b.com');
+INSERT INTO Person (email) VALUES ('c@d.com');
+INSERT INTO Person (email) VALUES ('a@b.com');
+
+-- Câu lệnh MySQL
+-- - Lấy ra danh sách email nào trùng lặp
+
+SELECT email
+	FROM Person
+	GROUP BY email
+	HAVING COUNT(email) > 1;
